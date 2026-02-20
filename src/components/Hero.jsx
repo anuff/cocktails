@@ -1,23 +1,61 @@
 import React from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { SplitText } from 'gsap/all';
 
 const Hero = () => {
+  useGSAP(() => {
+    const heroSplit = new SplitText('.title', {type: 'chars, words'});
+    const paragraphSplit = new SplitText('.subtitle', {type: 'lines'});
+
+    heroSplit.chars.forEach((char) => char.classList.add('text-gradient'))
+
+    gsap.from(heroSplit.chars, {
+      opacity: 0,
+      yPercent: 100,
+      duration: 1.5,
+      ease: 'expo.out',
+      stagger: 0.05
+    })
+
+    gsap.from(paragraphSplit.lines, {
+      opacity: 0,
+      yPercent: 100,
+      duration: 1.5,
+      ease: 'expo.out',
+      stagger: 0.06,
+      delay: 1
+    })
+
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: '#hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true,
+      }
+    })
+    .to('.right-leaf', {y: 100}, 0)
+    .to('.left-leaf', {y: -200}, 0)
+  }, [])
+
   return (
     <>
       <section id="hero" className="noisy">
         <h1 className="title">MOJITO</h1>
         <img
           src="/images/hero-left-leaf.png"
-          className="left-leaf"
+          className="left-leaf "
           alt="left-leaf"
         />
         <img
-          src="/images/hero-right-leaf.png"
-          className="right-leaf"
+          src="/images/hero-right-leaf.png "
+          className="right-leaf "
           alt="right-leaf"
         />
         <div className="body ">
           <div className="content">
-            <div className="space-y-5 hidden md:block">
+            <div className="space-y-5 ">
               <p>Cool. Crisp. Classic.</p>
               <p className="subtitle">
                 Sip the Spirit <br /> of Summer
@@ -30,7 +68,7 @@ const Hero = () => {
                 creative flair, and timeless recipes - designed to delight your
                 senses.
               </p>
-              <a href="#cocktails" View Cocktails></a>
+              <a href="#cocktails"View Cocktails></a>
             </div>
           </div>
         </div>
